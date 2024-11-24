@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo">
+    <ActionBar title="Broker Dashboard" class="bg-blue-600 text-white">
+        <ActionItem tap="{{ onLogout }}" ios.position="right" android.position="actionBar">
+            <Label text="Logout" class="text-white p-2" />
+        </ActionItem>
+    </ActionBar>
+
+    <GridLayout rows="auto, *">
+        <!-- Stats Overview -->
+        <GridLayout row="0" columns="*, *, *" class="bg-white p-4">
+            <StackLayout col="0" class="text-center">
+                <Label text="{{ activeTrucks }}" class="text-2xl font-bold text-blue-600" />
+                <Label text="Active Trucks" class="text-sm text-gray-600" />
+            </StackLayout>
+            <StackLayout col="1" class="text-center">
+                <Label text="{{ pendingShipments }}" class="text-2xl font-bold text-orange-600" />
+                <Label text="Pending" class="text-sm text-gray-600" />
+            </StackLayout>
+            <StackLayout col="2" class="text-center">
+                <Label text="{{ completedToday }}" class="text-2xl font-bold text-green-600" />
+                <Label text="Completed" class="text-sm text-gray-600" />
+            </StackLayout>
+        </GridLayout>
+
+        <!-- Main Content -->
+        <TabView row="1" selectedIndex="{{ selectedTabIndex }}" class="bg-gray-100">
+            <!-- Shipments Tab -->
+            <TabViewItem>
+                <TabViewItem.title>
+                    <StackLayout orientation="vertical">
+                        <Label text="&#xf0d1;" class="fas text-lg" />
+                        <Label text="Shipments" class="text-xs" />
+                    </StackLayout>
+                </TabViewItem.title>
+                <GridLayout>
+                    <ListView items="{{ shipments }}" class="bg-gray-100">
+                        <ListView.itemTemplate>
+                            <GridLayout columns="*, auto" class="bg-white m-2 p-4 rounded-lg">
+                                <StackLayout col="0">
+                                    <Label text="{{ id }}" class="text-xs text-gray-500" />
+                                    <Label text="{{ pickup }}" class="font-bold" />
+                                    <Label text="{{ delivery }}" class="text-gray-700" />
+                                    <Label text="{{ status }}" class="text-sm" 
+                                        class="{{ status === 'Pending' ? 'text-orange-600' : 'text-green-600' }}" />
+                                </StackLayout>
+                                <Button col="1" text="Manage" tap="{{ $parent.onManageShipment }}" 
+                                    class="bg-blue-600 text-white text-sm p-2 rounded" />
+                            </GridLayout>
+                        </ListView.itemTemplate>
+                    </ListView>
+                </GridLayout>
+            </TabViewItem>
+
+            <!-- Trucks Tab -->
+            <TabViewItem>
+                <TabViewItem.title>
+                    <StackLayout orientation="vertical">
+                        <Label text="&#xf238;" class="fas text-lg" />
+                        <Label text="Trucks" class="text-xs" />
+                    </StackLayout>
+                </TabViewItem.title>
+                <GridLayout rows="auto, *">
+                    <Button row="0" text="+ Add New Truck" tap="{{ onAddTruck }}" 
+                        class="bg-blue-600 text-white m-2 rounded" />
+                    <ListView row="1" items="{{ trucks }}" class="bg-gray-100">
+                        <ListView.itemTemplate>
+                            <GridLayout tap="{{ $parent.onTruckTap }}" class="bg-white m-2 p-4 rounded-lg">
+                                <StackLayout>
+                                    <GridLayout columns="*, auto">
+                                        <StackLayout col="0">
+                                            <Label text="{{ plateNumber }}" class="font-bold" />
+                                            <Label text="{{ type }}" class="text-gray-700" />
+                                            <Label text="{{ status }}" 
+                                                class="{{ status === 'Available' ? 'text-green-600' : 'text-orange-600' }}" />
+                                        </StackLayout>
+                                        <Label col="1" text="&#xf105;" class="fas text-xl text-gray-400" />
+                                    </GridLayout>
+                                </StackLayout>
+                            </GridLayout>
+                        </ListView.itemTemplate>
+                    </ListView>
+                </GridLayout>
+            </TabViewItem>
+
+            <!-- Analytics Tab -->
+            <TabViewItem>
+                <TabViewItem.title>
+                    <StackLayout orientation="vertical">
+                        <Label text="&#xf201;" class="fas text-lg" />
+                        <Label text="Analytics" class="text-xs" />
+                    </StackLayout>
+                </TabViewItem.title>
+                <ScrollView>
+                    <StackLayout class="p-4">
+                        <Label text="Revenue Overview" class="text-xl font-bold mb-2" />
+                        <GridLayout columns="*, *" class="bg-white p-4 rounded-lg mb-4">
+                            <StackLayout col="0">
+                                <Label text="Today's Revenue" class="text-gray-600" />
+                                <Label text="{{ todayRevenue }}" class="text-xl font-bold text-green-600" />
+                            </StackLayout>
+                            <StackLayout col="1">
+                                <Label text="This Month" class="text-gray-600" />
+                                <Label text="{{ monthRevenue }}" class="text-xl font-bold text-blue-600" />
+                            </StackLayout>
+                        </GridLayout>
+
+                        <Label text="Performance Metrics" class="text-xl font-bold mb-2" />
+                        <GridLayout rows="auto, auto" columns="*, *" class="bg-white p-4 rounded-lg">
+                            <Label row="0" col="0" text="Completion Rate" class="text-gray-600" />
+                            <Label row="0" col="1" text="{{ completionRate }}%" class="text-right text-green-600 font-bold" />
+                            <Label row="1" col="0" text="On-time Delivery" class="text-gray-600" />
+                            <Label row="1" col="1" text="{{ onTimeRate }}%" class="text-right text-blue-600 font-bold" />
+                        </GridLayout>
+                    </StackLayout>
+                </ScrollView>
+            </TabViewItem>
+        </TabView>
+    </GridLayout>
+</Page></content></file>
+
+<boltAction type="file" filePath="app/pages/broker/truck-detail.xml"><?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo">
+    <ActionBar title="Truck Details" class="bg-blue-600 text-white">
+        <NavigationButton text="Back" android.systemIcon="ic_menu_back" />
+    </ActionBar>
+
+    <ScrollView>
+        <StackLayout class="p-4">
+            <!-- Truck Info -->
+            <GridLayout rows="auto, auto" columns="*, auto" class="bg-white p-4 rounded-lg mb-4">
+                <Label row="0" col="0" text="{{ truck.plateNumber }}" class="text-2xl font-bold" />
+                <Label row="0" col="1" text="{{ truck.status }}" 
+                    class="{{ truck.status === 'Available' ? 'text-green-600' : 'text-orange-600' }} font-bold" />
+                <Label row="1" col="0" text="{{ truck.type }}" class="text-gray-600" />
+            </GridLayout>
+
+            <!-- Driver Info -->
+            <Label text="Driver Information" class="text-xl font-bold mb-2" />
+            <GridLayout class="bg-white p-4 rounded-lg mb-4">
+                <StackLayout>
+                    <Label text="{{ driver.name }}" class="text-lg font-bold" />
+                    <Label text="{{ driver.phone }}" class="text-gray-600" />
+                    <Label text="{{ driver.experience }}" class="text-gray-600" />
+                    <Label text="{{ driver.rating }}" class="text-yellow-500 font-bold" />
+                </StackLayout>
+            </GridLayout>
+
+            <!-- Current Cargo -->
+            <Label text="Current Cargo" class="text-xl font-bold mb-2" />
+            <GridLayout rows="auto, auto, auto" class="bg-white p-4 rounded-lg mb-4" 
+                visibility="{{ currentCargo ? 'visible' : 'collapsed' }}">
+                <Label row="0" text="{{ currentCargo.type }}" class="text-lg font-bold" />
+                <Label row="1" text="{{ currentCargo.weight }}" class="text-gray-600" />
+                <Label row="2" text="{{ currentCargo.destination }}" class="text-gray-600" />
+            </GridLayout>
+            <Label text="No active cargo" class="text-gray-500 text-center p-4" 
+                visibility="{{ !currentCargo ? 'visible' : 'collapsed' }}" />
+
+            <!-- Metrics -->
+            <Label text="Performance Metrics" class="text-xl font-bold mb-2" />
+            <GridLayout rows="auto, auto, auto" columns="*, *" class="bg-white p-4 rounded-lg">
+                <Label row="0" col="0" text="Deliveries This Month" class="text-gray-600" />
+                <Label row="0" col="1" text="{{ metrics.deliveriesThisMonth }}" class="text-right font-bold" />
+                
+                <Label row="1" col="0" text="On-Time Rate" class="text-gray-600" />
+                <Label row="1" col="1" text="{{ metrics.onTimeRate }}%" class="text-right font-bold text-green-600" />
+                
+                <Label row="2" col="0" text="Total Distance" class="text-gray-600" />
+                <Label row="2" col="1" text="{{ metrics.totalDistance }}" class="text-right font-bold" />
+            </GridLayout>
+        </StackLayout>
+    </ScrollView>
+</Page></content></file>
+
+<boltAction type="file" filePath="app/pages/broker/truck-detail.ts">import { EventData, Page } from '@nativescript/core';
+import { TruckDetailViewModel } from './truck-detail-view-model';
+
+export function onNavigatingTo(args: EventData) {
+    const page = <Page>args.object;
+    const context = page.navigationContext;
+    page.bindingContext = new TruckDetailViewModel(context.truckId);
+}

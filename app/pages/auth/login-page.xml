@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="bg-gray-100">
+    <ActionBar title="FreightFlow Login" class="bg-blue-600 text-white" />
+    
+    <StackLayout class="p-4">
+        <Label text="Welcome to FreightFlow" class="text-2xl font-bold text-center mb-4" />
+        
+        <SegmentedBar selectedIndex="{{ loginType }}" class="mb-4">
+            <SegmentedBar.items>
+                <SegmentedBarItem title="User" />
+                <SegmentedBarItem title="Broker" />
+            </SegmentedBar.items>
+        </SegmentedBar>
+
+        <TextField hint="Email" text="{{ email }}" keyboardType="email" 
+            class="input p-4 bg-white rounded-lg mb-2" />
+        <TextField hint="Password" text="{{ password }}" secure="true" 
+            class="input p-4 bg-white rounded-lg mb-4" />
+
+        <Button text="Login" tap="{{ onLogin }}" 
+            class="bg-blue-600 text-white font-bold py-3 rounded-lg mb-2" />
+        <Button text="Sign Up" tap="{{ onSignUp }}" 
+            class="bg-gray-600 text-white font-bold py-3 rounded-lg mb-2" />
+        
+        <Button text="Login with Google" tap="{{ onGoogleLogin }}" 
+            class="bg-white text-gray-700 font-bold py-3 rounded-lg border border-gray-300" />
+    </StackLayout>
+</Page>

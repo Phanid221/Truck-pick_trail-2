@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo">
+    <ActionBar title="FreightFlow" class="bg-blue-600 text-white">
+        <ActionItem tap="{{ onLogout }}" ios.position="right" android.position="actionBar">
+            <Label text="Logout" class="text-white p-2" />
+        </ActionItem>
+    </ActionBar>
+
+    <GridLayout rows="auto, *">
+        <!-- Quick Actions -->
+        <GridLayout row="0" columns="*, *" class="bg-white p-4">
+            <Button col="0" text="Book Shipment" tap="{{ onBookShipment }}" 
+                class="bg-blue-600 text-white m-1 rounded-lg" />
+            <Button col="1" text="Track Shipment" tap="{{ onTrackShipment }}" 
+                class="bg-green-600 text-white m-1 rounded-lg" />
+        </GridLayout>
+
+        <!-- Shipments List -->
+        <ListView row="1" items="{{ shipments }}" class="bg-gray-100">
+            <ListView.itemTemplate>
+                <GridLayout columns="*, auto" class="bg-white m-2 p-4 rounded-lg">
+                    <StackLayout col="0">
+                        <Label text="{{ id }}" class="text-xs text-gray-500" />
+                        <Label text="{{ pickup }}" class="font-bold" />
+                        <Label text="{{ delivery }}" class="text-gray-700" />
+                        <Label text="{{ status }}" class="text-sm" 
+                            class="{{ status === 'Pending' ? 'text-orange-600' : 'text-green-600' }}" />
+                    </StackLayout>
+                    <Button col="1" text="View" tap="{{ $parent.onViewShipment }}" 
+                        class="bg-blue-600 text-white text-sm p-2 rounded" />
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+    </GridLayout>
+</Page>
